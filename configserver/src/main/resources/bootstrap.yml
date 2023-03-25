@@ -9,6 +9,9 @@ spring:
       server:
         native:
           search-locations: classpath:/config
+      enabled: true
+    util:
+      enabled: true
 
 server:
   port: 8071

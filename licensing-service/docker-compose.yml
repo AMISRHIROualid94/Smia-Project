@@ -6,7 +6,6 @@ services:
     environment:
       SPRING_PROFILES_ACTIVE: "dev"
       SPRING_CLOUD_CONFIG_URI: http://configserver:8071
-      management_endpoints_web_exposure_include: "*"
     ports:
       - "8080:8080"
 

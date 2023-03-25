@@ -3,7 +3,7 @@ package com.optimagrowth.license.models;
 import lombok.*;
 import org.springframework.hateoas.RepresentationModel;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @Setter
 @Getter

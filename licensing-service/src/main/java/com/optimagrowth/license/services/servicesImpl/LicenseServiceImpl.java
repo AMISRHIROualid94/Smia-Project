@@ -1,64 +1,50 @@
 package com.optimagrowth.license.services.servicesImpl;
 
-import com.optimagrowth.license.controller.LicenseController;
+import com.optimagrowth.license.config.ServiceConfig;
 import com.optimagrowth.license.models.License;
 import com.optimagrowth.license.services.LicenseService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.optimagrowth.license.repository.LicenseRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
-import java.util.Locale;
-import java.util.Random;
-
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @Service
+@RequiredArgsConstructor
 public class LicenseServiceImpl implements LicenseService {
 
-    @Autowired
-    private MessageSource messageSource;
+    private final MessageSource messageSource;
+    private final LicenseRepository licenseRepository;
+
+    private final ServiceConfig config;
 
     @Override
-    public License getLicense(String organizationId,String licenseId) {
-        License license = new License();
-        license.setId(new Random().nextInt(1000));
-        license.setLicenseId(licenseId);
-        license.setOrganizationId(organizationId);
-        license.setDescription("Software product");
-        license.setProductName("Ostock");
-        license.setLicenseType("full");
-        license.add(
-                linkTo(methodOn(LicenseController.class).getLicense(organizationId,licenseId)).withSelfRel(),
-                linkTo(methodOn(LicenseController.class).createLicense(license,organizationId,null)).withRel("createLicense"),
-                linkTo(methodOn(LicenseController.class).updateLicense(license,organizationId,null)).withRel("updateLicense"),
-                linkTo(methodOn(LicenseController.class).deletLicense(organizationId,license.getLicenseId(),null)).withRel("deleteLicense")
-        );
-        return license;
-    }
-
-    @Override
-    public String createLicense(License license, String organizationId, Locale locale) {
-        String responseMessage = null;
-        if (license != null){
-            license.setOrganizationId(organizationId);
-            responseMessage = String.format(messageSource.getMessage("license.create.message",null,locale),license.toString());
+    public License getLicense(Long licenseId,Long organizationId) {
+        License license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId,licenseId);
+        if (license == null){
+            throw new IllegalArgumentException(String.format(messageSource.getMessage("license.search.error.message",null,null),licenseId,organizationId));
         }
-        return responseMessage;
+
+        return license.withComment(config.getProperty());
     }
 
     @Override
-    public String updateLicense(License license, String organizationId, Locale locale) {
+    public License createLicense(License license) {
+            licenseRepository.save(license);
+        return license.withComment(config.getProperty());
+    }
+
+    @Override
+    public License updateLicense(License license) {
+        licenseRepository.save(license);
+       return license.withComment(config.getProperty());
+    }
+
+    @Override
+    public String deleteLicense(Long licenseId) {
         String responseMessage = null;
-        if (license != null){
-            license.setOrganizationId(organizationId);
-            responseMessage = String.format(messageSource.getMessage("license.update.message",null,locale),license.toString());
-        }
+        licenseRepository.deleteById(licenseId);
+        responseMessage = String.format(messageSource.getMessage("license.delete.message",null,null),licenseId);
         return responseMessage;
-    }
-
-    @Override
-    public String deleteLicense(String licenseId, String organizationId, Locale locale) {
-        return String.format(messageSource.getMessage("license.delete.message",null,locale),licenseId,organizationId);
     }
 }

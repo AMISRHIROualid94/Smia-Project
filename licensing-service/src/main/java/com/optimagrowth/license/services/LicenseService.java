@@ -5,8 +5,8 @@ import com.optimagrowth.license.models.License;
 import java.util.Locale;
 
 public interface LicenseService {
-    License getLicense(String licenseId,String organizationId);
-    String createLicense(License license, String organizationId, Locale locale);
-    String updateLicense(License license,String organizationId, Locale locale);
-    String deleteLicense(String licenseId,String organizationId, Locale locale);
+    License getLicense(Long licenseId,Long organizationId);
+    License createLicense(License license);
+    License updateLicense(License license);
+    String deleteLicense(Long licenseId);
 }

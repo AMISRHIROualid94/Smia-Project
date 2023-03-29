@@ -6,17 +6,17 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.optimagrowth.license.models.License;
 import com.optimagrowth.license.services.LicenseService;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 
 @RestController
 @RequestMapping(value = "v1/organization/{organizationId}/license")
-@RequiredArgsConstructor
 public class LicenseController {
 
-    private final LicenseService licenseService;
+    @Autowired
+    private LicenseService licenseService;
 
     @GetMapping(value = "/{licenseId}")
     public ResponseEntity<License> getLicense(@PathVariable("organizationId") Long organizationId,

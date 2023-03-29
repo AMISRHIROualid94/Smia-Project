@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: organization-service
+  #Active profile
+  profiles:
+    active: dev
+  #Cloud server config for client
+  cloud:
+    config:
+      uri: http://localhost:8071
+#Eureka  client config
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    serviceUrl:
+      defaultZone: http://${eureka.instance.hostname}:8070/eureka
+#port aléatoire
+server:
+  port: 0

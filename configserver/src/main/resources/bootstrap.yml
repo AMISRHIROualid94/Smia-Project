@@ -2,17 +2,15 @@ spring:
   application:
     name: config-server
   profiles:
-    active: native, git
-
+    active: native
   cloud:
     config:
       server:
         native:
           search-locations: classpath:/config
-        git:
-          uri: https://github.com/AMISRHIROualid94/cofigserver.git
-          search-paths: configserver
-      enabled: true
+        #git:
+          #uri: https://github.com/AMISRHIROualid94/cofigserver.git
+          #search-paths: configserver
     util:
       enabled: true
 

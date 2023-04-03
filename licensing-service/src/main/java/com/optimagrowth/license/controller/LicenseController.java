@@ -62,9 +62,7 @@ public class LicenseController {
     }
 
     //Circuitbreaker fallback Method
-    public ResponseEntity<License> fbMethod(Long organizationId,Long licenseId, RuntimeException runtimeException){
-        License license = new License();
-        license.setDescription("Circuit breaker");
-        return ResponseEntity.ok(license);
+    public ResponseEntity<String> fbMethod(Long organizationId,Long licenseId, RuntimeException runtimeException){
+        return ResponseEntity.ok("Somthing wrong! try after some minutes.");
     }
 }

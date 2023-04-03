@@ -5,8 +5,9 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@ConfigurationProperties(prefix = "exemple")
+@ConfigurationProperties(prefix = "example")
 @Data
 public class ServiceConfig {
+
     private String property;
 }

@@ -9,17 +9,22 @@ import com.optimagrowth.license.services.client.OrganizationDiscoveryClient;
 import com.optimagrowth.license.services.client.OrganizationFeignClient;
 import com.optimagrowth.license.services.client.OrganizationRestTemplateClient;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.TimeoutException;
 
 
 @Service
 @RequiredArgsConstructor
 public class LicenseServiceImpl implements LicenseService {
 
+    private static final Logger logger = LoggerFactory.getLogger(LicenseServiceImpl.class);
     private final MessageSource messageSource;
     private final LicenseRepository licenseRepository;
 
@@ -73,8 +78,9 @@ public class LicenseServiceImpl implements LicenseService {
     }
 
     @Override
-    public List<License> getLicensesByOrganization(Long organizationId) {
-        return null;
+    public List<License> getLicensesByOrganization(Long organizationId) throws TimeoutException {
+        //randomlyRunLong();
+        return licenseRepository.findByOrganizationId(organizationId);
     }
 
     @Override
@@ -96,4 +102,24 @@ public class LicenseServiceImpl implements LicenseService {
         responseMessage = String.format(messageSource.getMessage("license.delete.message",null,null),licenseId);
         return responseMessage;
     }
+
+
+    @Override
+    public void randomlyRunLong() throws TimeoutException {
+        Random random = new Random();
+        int randomInt = 3;
+        if (randomInt == 3) sleep();
+    }
+
+    @Override
+    public void sleep() throws TimeoutException{
+        try {
+        System.out.println("Sleep");
+        Thread.sleep(5000);
+        throw new TimeoutException();
+        }catch (InterruptedException e){
+        logger.error(e.getMessage());
+        }
+    }
+
 }

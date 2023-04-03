@@ -6,9 +6,13 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.optimagrowth.license.models.License;
 import com.optimagrowth.license.services.LicenseService;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.concurrent.TimeoutException;
 
 @RestController
 @RequestMapping(value = "v1/organization/{organizationId}/license")
@@ -18,6 +22,7 @@ public class LicenseController {
     private LicenseService licenseService;
 
     @GetMapping(value = "/{licenseId}")
+    @CircuitBreaker(name = "licenseService",fallbackMethod = "fbMethod")
     public ResponseEntity<License> getLicense(@PathVariable("organizationId") Long organizationId,
                                               @PathVariable("licenseId") Long licenseId){
         License license = licenseService.getLicense(licenseId,organizationId,"");
@@ -49,5 +54,17 @@ public class LicenseController {
     @DeleteMapping(value="/{licenseId}")
     public ResponseEntity<String> deleteLicense(@PathVariable("licenseId") Long licenseId){
         return ResponseEntity.ok(licenseService.deleteLicense(licenseId));
+    }
+
+    @GetMapping(value = "/")
+    public List<License> getLicenses(@PathVariable("organizationId") Long organizationId) throws TimeoutException {
+        return licenseService.getLicensesByOrganization(organizationId);
+    }
+
+    //Circuitbreaker fallback Method
+    public ResponseEntity<License> fbMethod(Long organizationId,Long licenseId, RuntimeException runtimeException){
+        License license = new License();
+        license.setDescription("Circuit breaker");
+        return ResponseEntity.ok(license);
     }
 }

@@ -13,7 +13,7 @@ public class OrganizationController {
     @Autowired
     private OrganizationService organizationService;
 
-    @GetMapping(value = "/{organizationId}")
+    @RequestMapping(value = "/{organizationId}",method = RequestMethod.GET)
     public ResponseEntity<Organization> getOrganization(@PathVariable Long organizationId){
         Organization organization = organizationService.findById(organizationId);
         return ResponseEntity.ok(organization);

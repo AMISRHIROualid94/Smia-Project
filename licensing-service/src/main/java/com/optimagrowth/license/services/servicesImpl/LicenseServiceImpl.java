@@ -79,7 +79,6 @@ public class LicenseServiceImpl implements LicenseService {
 
     @Override
     public List<License> getLicensesByOrganization(Long organizationId) throws TimeoutException {
-        //randomlyRunLong();
         return licenseRepository.findByOrganizationId(organizationId);
     }
 
@@ -101,25 +100,6 @@ public class LicenseServiceImpl implements LicenseService {
         licenseRepository.deleteById(licenseId);
         responseMessage = String.format(messageSource.getMessage("license.delete.message",null,null),licenseId);
         return responseMessage;
-    }
-
-
-    @Override
-    public void randomlyRunLong() throws TimeoutException {
-        Random random = new Random();
-        int randomInt = 3;
-        if (randomInt == 3) sleep();
-    }
-
-    @Override
-    public void sleep() throws TimeoutException{
-        try {
-        System.out.println("Sleep");
-        Thread.sleep(5000);
-        throw new TimeoutException();
-        }catch (InterruptedException e){
-        logger.error(e.getMessage());
-        }
     }
 
 }

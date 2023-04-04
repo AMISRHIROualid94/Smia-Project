@@ -6,7 +6,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 import com.optimagrowth.license.models.License;
 import com.optimagrowth.license.services.LicenseService;
+import io.github.resilience4j.bulkhead.annotation.Bulkhead;
 import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +26,9 @@ public class LicenseController {
 
     @GetMapping(value = "/{licenseId}")
     @CircuitBreaker(name = "licenseService",fallbackMethod = "fbMethod")
+    @Retry(name = "retryLicenseService",fallbackMethod = "fbMethod")
+    @RateLimiter(name = "licenseService",fallbackMethod = "fbMethod")
+    @Bulkhead(name = "bulkheadLicenseService",type = Bulkhead.Type.THREADPOOL,fallbackMethod = "fbMethod")
     public ResponseEntity<License> getLicense(@PathVariable("organizationId") Long organizationId,
                                               @PathVariable("licenseId") Long licenseId){
         License license = licenseService.getLicense(licenseId,organizationId,"");

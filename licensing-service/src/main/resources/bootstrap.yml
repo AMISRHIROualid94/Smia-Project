@@ -30,6 +30,18 @@ resilience4j:
         waitDurationInOpenState: 5s
         permittedNumberOfCallsInHalfOpenState: 3
         automaticTransitionFromOpenToHalfOpenEnabled: true
+  bulkhead:
+    instances:
+      bulkheadLicenseService:
+        max-wait-duration: 10ms
+        max-concurrent-calls: 20
+  thread-pool-bulkhead:
+    instances:
+      bulkheadLicenseService:
+        max-thread-pool-size: 1
+        core-thread-pool-size: 1
+        queue-capacity: 1
+        keep-alive-duration: 20ms
   timelimiter:
     instances:
       licenseService:
@@ -37,6 +49,16 @@ resilience4j:
 
   retry:
     instances:
+      retryLicenseService:
+        max-attempts: 5
+        wait-duration: 10000
+        retry-exceptions:
+          - java.lang.Throwable
+          - java.lang.RuntimeException
+          - java.util.concurrent.TimeoutException
+  ratelimiter:
+    instances:
       licenseService:
-        max-attempts: 3
-        wait-duration: 5s
+        timeout-duration: 1000ms
+        limit-refresh-period: 5000
+        limit-for-period: 5

@@ -14,8 +14,4 @@ public interface LicenseService {
     License createLicense(License license);
     License updateLicense(License license);
     String deleteLicense(Long licenseId);
-
-
-    void randomlyRunLong() throws TimeoutException;
-    void sleep() throws TimeoutException ;
 }

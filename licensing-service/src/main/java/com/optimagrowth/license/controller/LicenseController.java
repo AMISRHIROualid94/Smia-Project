@@ -1,9 +1,6 @@
 package com.optimagrowth.license.controller;
 
 
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
-
 import com.optimagrowth.license.models.License;
 import com.optimagrowth.license.services.LicenseService;
 import io.github.resilience4j.bulkhead.annotation.Bulkhead;
@@ -16,6 +13,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.concurrent.TimeoutException;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 
 @RestController
 @RequestMapping(value = "v1/organization/{organizationId}/license")

@@ -1,9 +1,11 @@
 package com.optimagrowth.license.models;
 
-import lombok.*;
-import org.springframework.hateoas.RepresentationModel;
-
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+import org.springframework.hateoas.RepresentationModel;
 
 @Setter
 @Getter

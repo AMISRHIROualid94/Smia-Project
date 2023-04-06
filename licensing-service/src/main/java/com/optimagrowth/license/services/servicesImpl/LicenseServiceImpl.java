@@ -3,8 +3,8 @@ package com.optimagrowth.license.services.servicesImpl;
 import com.optimagrowth.license.config.ServiceConfig;
 import com.optimagrowth.license.models.License;
 import com.optimagrowth.license.models.Organization;
-import com.optimagrowth.license.services.LicenseService;
 import com.optimagrowth.license.repository.LicenseRepository;
+import com.optimagrowth.license.services.LicenseService;
 import com.optimagrowth.license.services.client.OrganizationDiscoveryClient;
 import com.optimagrowth.license.services.client.OrganizationFeignClient;
 import com.optimagrowth.license.services.client.OrganizationRestTemplateClient;
@@ -16,7 +16,6 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.TimeoutException;
 
 
